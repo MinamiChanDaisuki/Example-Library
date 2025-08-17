@@ -2975,7 +2975,7 @@ do
 			Position = UDim2.new(0, 5, 0, 0);
 			Size = UDim2.new(1, -25, 1, 0);
 			TextSize = 14;
-			Text = '--';
+			Text = '?';
 			TextXAlignment = Enum.TextXAlignment.Left;
 			TextWrapped = true;
 			TextTruncate = Enum.TextTruncate.AtEnd;
@@ -3128,7 +3128,7 @@ do
 				Str = Dropdown.Value or '';
 			end;
 
-			ItemList.Text = (Str == '' and '--' or Str);
+			ItemList.Text = (Str == '' and '?' or Str);
 		end;
 
 		function Dropdown:GetActiveValues()
