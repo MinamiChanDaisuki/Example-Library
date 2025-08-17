@@ -246,6 +246,21 @@ function SaveManager:LoadAutoloadConfig()
     self.Library:Notify(string.format('Auto loaded config %q', name))
 end
 
+function SaveManager:AutoSaveAndSetAutoload()
+    local name = 'AutoSave'
+    local success, err = self:Save(name)
+    if not success then
+        return self.Library:Notify('Failed to save AutoSave config: ' .. err)
+    end
+
+    writefile(self.Folder .. '/settings/autoload.txt', name)
+    if self.AutoloadLabel then
+        self.AutoloadLabel:SetText('Current autoload config: ' .. name)
+    end
+
+    self.Library:Notify(string.format('Saved and set %q as autoload config', name))
+end
+
 
     function SaveManager:BuildConfigSection(tab)
         assert(self.Library, 'Must set SaveManager.Library')
