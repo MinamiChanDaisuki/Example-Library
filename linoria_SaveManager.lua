@@ -223,18 +223,28 @@ local SaveManager = {} do
         self.Library = library
     end
 
-    function SaveManager:LoadAutoloadConfig()
-        if isfile(self.Folder .. '/settings/autoload.txt') then
-            local name = readfile(self.Folder .. '/settings/autoload.txt')
+function SaveManager:LoadAutoloadConfig()
+    local path = self.Folder .. '/settings/autoload.txt'
+    if not isfile(path) then return end
 
-            local success, err = self:Load(name)
-            if not success then
-                return self.Library:Notify('Failed to load autoload config: ' .. err)
-            end
+    local name = readfile(path):gsub('\n', ''):gsub('\r', ''):gsub(' ', '')
+    local configPath = self.Folder .. '/settings/' .. name .. '.json'
 
-            self.Library:Notify(string.format('Auto loaded config %q', name))
+    if not isfile(configPath) then
+        local success, err = self:Save(name)
+        if not success then
+            return self.Library:Notify('Failed to create missing autoload config: ' .. err)
         end
+        self.Library:Notify(string.format('Created missing autoload config %q', name))
     end
+
+    local success, err = self:Load(name)
+    if not success then
+        return self.Library:Notify('Failed to load autoload config: ' .. err)
+    end
+
+    self.Library:Notify(string.format('Auto loaded config %q', name))
+end
 
 
     function SaveManager:BuildConfigSection(tab)
